@@ -1,5 +1,7 @@
 package org.jimbo.lock;
 
+import java.io.File;
+
 import net.minecraft.item.Item;
 import net.minecraftforge.common.config.Configuration;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -19,6 +21,10 @@ public class LockContainerMod {
 	
 	public static Item keyItem = new KeyItem();
 	
+	public static Checker checker;
+	
+	public static File lockFile;
+	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e) {
 		Configuration config = new Configuration(e.getSuggestedConfigurationFile());
@@ -28,6 +34,8 @@ public class LockContainerMod {
 		enabled = config.get(Configuration.CATEGORY_GENERAL, "EnableMod", true).getBoolean(true);
 		
 		config.save();
+		
+		checker = new Checker();
 	}
 	
 	@EventHandler
