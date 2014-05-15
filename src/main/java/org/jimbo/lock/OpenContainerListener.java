@@ -13,15 +13,24 @@ public class OpenContainerListener {
 
 	@SubscribeEvent
 	public void openContainerEvent(PlayerOpenContainerEvent e) {
+		System.out.println("Started Event");
 		EntityPlayer player = e.entityPlayer;
-
+		
+		System.out.println("Checking if holding a key");
 		if (player.getHeldItem().getItem() == LockContainerMod.keyItem
 				&& LockContainerMod.checker.isLocked(Util.getBlockLookingAt(player))) {
+			System.out.println("Opening container and is locked");
+			
+			System.out.println("Getting Block");
 			
 			Vec3 block = Util.getBlockLookingAt(player);
-
+			
+			System.out.println("Getting Key");
+			
 			long key = LockContainerMod.checker.getKey(block);
-						
+			
+			System.out.println("Checking Key");
+			
 			if(LockContainerMod.checker.getKey(player.getHeldItem()) == key) {
 				e.setCanceled(false);
 				return;
@@ -30,6 +39,8 @@ public class OpenContainerListener {
 			}
 		} else if(player.getHeldItem().getItem() == LockContainerMod.keyItem
 				&& !LockContainerMod.checker.isLocked(Util.getBlockLookingAt(player))) {
+			System.out.println("Locking container for the first time");
+			
 			ItemStack stack = player.getHeldItem();
 			
 			NBTTagCompound tag = stack.getTagCompound();
@@ -46,5 +57,7 @@ public class OpenContainerListener {
 				tag.setString("ID", Long.toString(id));
 			}
 		}
+		
+		System.out.println("Finished");
 	}
 }
