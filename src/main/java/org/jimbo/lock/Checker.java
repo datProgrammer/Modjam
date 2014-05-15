@@ -1,5 +1,6 @@
 package org.jimbo.lock;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Vec3;
 
 public class Checker {
@@ -13,5 +14,9 @@ public class Checker {
 			return Util.getValue(LockContainerMod.lockFile, block);
 		else
 			return 666L;
+	}
+	
+	public long getKey(ItemStack stack) {
+		return Util.getValue(LockContainerMod.lockFile, stack);
 	}
 }
