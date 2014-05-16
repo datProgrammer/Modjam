@@ -1,11 +1,15 @@
 package org.jimbo.power.entity;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+
+import org.jimbo.power.explosion.ExplosionAdv;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityGroundZero extends Entity {
 	public int fuse;
@@ -77,8 +81,19 @@ public class EntityGroundZero extends Entity {
 
 	private void explode() {
 		float f = 1000.0F;
-		this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, f,
-				true);
+		ExplosionAdv explosion = new ExplosionAdv(this.worldObj, (EntityPlayer) this.tntPlacedBy, this.posX, this.posY, this.posZ, f);
+		
+		for(int i = 0; i < 10; i++) {
+			explosion.doExplosionA();
+			explosion.doExplosionB(true);
+		}
+		
+		ExplosionAdv explosion2 = new ExplosionAdv(this.worldObj, (EntityPlayer) this.tntPlacedBy, this.posX, this.posY, this.posZ, f);
+		
+		for(int i = 0; i < 10; i++) {
+			explosion2.doExplosionA();
+			explosion2.doExplosionB(true);
+		}
 	}
 
 	protected void writeEntityToNBT(NBTTagCompound paramNBTTagCompound) {
