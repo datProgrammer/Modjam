@@ -1,12 +1,14 @@
 package org.jimbo.power.items;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import org.jimbo.power.PowerItems;
+import org.jimbo.power.entity.EntityGroundZero;
 
 public class GroundZero extends Item {
 
@@ -22,7 +24,11 @@ public class GroundZero extends Item {
 		int blockY = player.rayTrace(100, 1.0F).blockY + 75;
 		int blockZ = player.rayTrace(100, 1.0F).blockZ;
 		
-		world.createExplosion(player, blockX, blockY, blockZ, 100.0F, true);
+		EntityChicken chicken = new EntityChicken(world);
+		
+		chicken.setPosition(blockX, blockY, blockZ);
+		
+		world.spawnEntityInWorld(new EntityGroundZero(world, blockX, blockY, blockZ, player));
 		
 		stack.stackSize = 0;
 		
