@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
@@ -26,39 +27,16 @@ public class KeyItem extends Item {
 	public void onCreated(ItemStack stack, World world, EntityPlayer player) {
 		stack.stackTagCompound = new NBTTagCompound();
 		
-		Random rand = new Random();
-		
-		rand.setSeed(world.getSeed());
-		
 		stack.stackTagCompound.setString("Owner", player.getDisplayName());
-		stack.stackTagCompound.setLong("Key", rand.nextLong());
+		stack.stackTagCompound.setInteger("Key", (int) (Math.random() * Integer.MAX_VALUE));
 	}
 	
-	@Override
-	public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float px, float py, float pz) {
-		if(stack.stackTagCompound != null) {
-			Random rand = new Random();
-			
-			rand.setSeed(world.getSeed());
-			
-			if(stack.stackTagCompound.hasKey("Owner"))
-				stack.stackTagCompound.setString("Owner", player.getDisplayName());
-			
-			if(stack.stackTagCompound.hasKey("Key"))
-				stack.stackTagCompound.setLong("Key", rand.nextLong());
-			
-			return true;
-		}
-		
-		return false;
-	}
-	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean var4) {
 		if(stack.stackTagCompound != null) {
 			String owner = stack.stackTagCompound.getString("Owner");
-			long code = stack.stackTagCompound.getLong("Key");
+			int code = stack.stackTagCompound.getInteger("Key");
 			
 			list.add("Owner: " + owner);
 			
@@ -74,20 +52,28 @@ public class KeyItem extends Item {
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float px, float py, float pz) {
 		if(world.getTileEntity(x, y, z) != null) {
-			NBTTagCompound tag = new NBTTagCompound();
+			String[] onlinePlayers = MinecraftServer.getServer().getAllUsernames();
 			
-			String owner = "";
-			long key = 0L;
-			
-			if(stack.stackTagCompound != null) {
-				owner = stack.stackTagCompound.getString("Owner");
-				key = stack.stackTagCompound.getLong("Key");
+			for(String playerName : onlinePlayers) {
+				EntityPlayer otherPlayer = world.getPlayerEntityByName(playerName);
+				
+				NBTTagCompound tag = otherPlayer.getEntityData();
+				
+				if(tag.hasKey("LockedChests")) {
+					int[] tagData = tag.getIntArray("LockedChests");
+					
+					for(int i = 0; i < tagData.length; i += 4) {
+						int xCoord = tagData[i];
+						int yCoord = tagData[i + 1];
+						int zCoord = tagData[i + 2];
+						int key = tagData[i + 3];
+						
+						if(xCoord == x && yCoord == y && zCoord == z) {
+							
+						}
+					}
+				}
 			}
-			
-			tag.setString("Owner", owner);
-			tag.setLong("Key", key);
-			
-			world.getTileEntity(x, y, z).writeToNBT(tag);
 		}
 		
 		System.out.println("LOCKED CONTAINER");
