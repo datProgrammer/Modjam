@@ -34,6 +34,25 @@ public class KeyItem extends Item {
 		stack.stackTagCompound.setLong("Key", rand.nextLong());
 	}
 	
+	@Override
+	public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float px, float py, float pz) {
+		if(stack.stackTagCompound != null) {
+			Random rand = new Random();
+			
+			rand.setSeed(world.getSeed());
+			
+			if(stack.stackTagCompound.hasKey("Owner"))
+				stack.stackTagCompound.setString("Owner", player.getDisplayName());
+			
+			if(stack.stackTagCompound.hasKey("Key"))
+				stack.stackTagCompound.setLong("Key", rand.nextLong());
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean var4) {
@@ -47,11 +66,29 @@ public class KeyItem extends Item {
 				list.add(EnumChatFormatting.GREEN + "KeyPass: " + code);
 			else
 				list.add(EnumChatFormatting.RED + "KeyPass: " + EnumChatFormatting.OBFUSCATED + code);
+		} else {
+			stack.stackTagCompound = new NBTTagCompound();
 		}
 	}
 	
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float px, float py, float pz) {
+		if(world.getTileEntity(x, y, z) != null) {
+			NBTTagCompound tag = new NBTTagCompound();
+			
+			String owner = "";
+			long key = 0L;
+			
+			if(stack.stackTagCompound != null) {
+				owner = stack.stackTagCompound.getString("Owner");
+				key = stack.stackTagCompound.getLong("Key");
+			}
+			
+			tag.setString("Owner", owner);
+			tag.setLong("Key", key);
+			
+			world.getTileEntity(x, y, z).writeToNBT(tag);
+		}
 		
 		System.out.println("LOCKED CONTAINER");
 		
