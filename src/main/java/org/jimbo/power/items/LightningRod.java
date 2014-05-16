@@ -1,13 +1,13 @@
 package org.jimbo.power.items;
 
-import org.jimbo.power.PowerItems;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import org.jimbo.power.PowerItems;
 
 public class LightningRod extends Item {
 
