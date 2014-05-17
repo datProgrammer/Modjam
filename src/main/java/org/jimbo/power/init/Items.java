@@ -25,5 +25,6 @@ public class Items {
 		GameRegistry.registerItem(lightningRod, "lightningRod");
 		GameRegistry.registerItem(summonerRod, "summonerRod");
 		GameRegistry.registerItem(groundZero, "groundZero");
+		GameRegistry.registerItem(airStrike, "airStrike");
 	}
 }

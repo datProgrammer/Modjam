@@ -86,13 +86,17 @@ public class EntityGroundZero extends Entity {
 		for(int i = 0; i < 10; i++) {
 			explosion.doExplosionA();
 			explosion.doExplosionB(true);
+			
+			explosion = new ExplosionAdv(this.worldObj, (EntityPlayer) this.tntPlacedBy, this.posX + i, this.posY, this.posZ, f);
 		}
 		
-		ExplosionAdv explosion2 = new ExplosionAdv(this.worldObj, (EntityPlayer) this.tntPlacedBy, this.posX, this.posY, this.posZ, f);
+		ExplosionAdv explosion2 = new ExplosionAdv(this.worldObj, (EntityPlayer) this.tntPlacedBy, this.posX, this.posY, this.posZ + 10, f);
 		
 		for(int i = 0; i < 10; i++) {
 			explosion2.doExplosionA();
 			explosion2.doExplosionB(true);
+			
+			explosion2 = new ExplosionAdv(this.worldObj, (EntityPlayer) this.tntPlacedBy, this.posX + i, this.posY, this.posZ + 10, f);
 		}
 	}
 
