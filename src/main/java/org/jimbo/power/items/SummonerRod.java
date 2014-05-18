@@ -20,7 +20,7 @@ public class SummonerRod extends Item {
 	public SummonerRod() {
 		this.setMaxStackSize(1);
 		this.setCreativeTab(CreativeTabs.tabTools);
-		this.setTextureName(PowerItems.NAME + ":rod_summoner");
+		this.setTextureName(PowerItems.MODID + ":rod_summoner");
 		this.setUnlocalizedName("summonerRod");
 	}
 	

@@ -2,6 +2,7 @@ package org.jimbo.power.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -76,6 +77,8 @@ public class EntityGroundZero extends Entity {
 		} else {
 			this.worldObj.spawnParticle("smoke", this.posX, this.posY + 0.5D,
 					this.posZ, 0.0D, 0.0D, 0.0D);
+			
+			this.worldObj.spawnEntityInWorld(new EntityTNTPrimed(worldObj, this.posX, this.posY, this.posZ, this.tntPlacedBy));
 		}
 	}
 
@@ -88,15 +91,6 @@ public class EntityGroundZero extends Entity {
 			explosion.doExplosionB(true);
 			
 			explosion = new ExplosionAdv(this.worldObj, (EntityPlayer) this.tntPlacedBy, this.posX + i, this.posY, this.posZ, f);
-		}
-		
-		ExplosionAdv explosion2 = new ExplosionAdv(this.worldObj, (EntityPlayer) this.tntPlacedBy, this.posX, this.posY, this.posZ + 10, f);
-		
-		for(int i = 0; i < 10; i++) {
-			explosion2.doExplosionA();
-			explosion2.doExplosionB(true);
-			
-			explosion2 = new ExplosionAdv(this.worldObj, (EntityPlayer) this.tntPlacedBy, this.posX + i, this.posY, this.posZ + 10, f);
 		}
 	}
 
